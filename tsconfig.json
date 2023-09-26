@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",                      
+        "lib": ["ESNext", "DOM"],                       
+        "module": "esnext",                    
+        "rootDir": "./src/ts",
+        "outDir": "./build",       
+
+        "allowJs": false,                        
+
+        "forceConsistentCasingInFileNames": true,
+
+        "strict": true,                          
+        "noImplicitAny": true,                   
+
+        "skipLibCheck": true,
+        
+        "sourceMap": true
+    }
+}

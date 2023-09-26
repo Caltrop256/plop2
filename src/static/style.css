@@ -1,0 +1,27 @@
+body {
+    overflow: hidden;
+}
+
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    image-rendering: pixelated;
+    background-color: black;
+    cursor: crosshair;
+}
+
+#mouse-info {
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    color: grey;
+    font-family: monospace;
+}
+
+.debug-info {
+    position: absolute;
+    z-index: 1;
+    color: grey;
+    font-family: monospace;
+}

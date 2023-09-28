@@ -32,6 +32,7 @@ static void updateDirtyRectAtomic(DirtyRect *addr, DirtyRect value) {
 
 void updateChunkDirtyRect(CellView *cv) {
     Chunk *chunk = cv->chunk;
+    atomic_rmw_add_i32(&chunk->updateEventsInLastTick, 1);
 
     i16 centralMinX = (i16)cv->x - PADDING;
     i16 centralMaxX = (i16)cv->x + PADDING;

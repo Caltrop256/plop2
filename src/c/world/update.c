@@ -34,7 +34,7 @@ void updateChunkTemperature(Chunk *chunk) {
 
             TEMPERATURE(&source) = source.cell->temperature[!world.tick] + cumulativeTemperatureChange;
 
-            if(fabs(TEMPERATURE(&source) - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) totalSignificantTransfers += 1;
+            if(fabs32(TEMPERATURE(&source) - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) totalSignificantTransfers += 1;
 
             if(el->type != TYPE_EMPTY) {
                 if(info->temperature.lowTemperatureTransition.occurs && TEMPERATURE(&source) < info->temperature.lowTemperatureTransition.transitionPoint) {
@@ -60,10 +60,10 @@ void updateChunkTemperatureBoundary(Chunk *chunk) {
     _Bool right = chunk->neighbors[1][2] != NULL && chunk->neighbors[1][2]->temperatureActive;
 
     for(u32 i = 0; i < CHUNKSIZE; ++i) {
-        if(top && fabs(chunk->neighbors[0][1]->cells[CHUNKSIZE - 1][i].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
-        if(bottom && fabs(chunk->neighbors[2][1]->cells[0][i].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
-        if(left && fabs(chunk->neighbors[1][0]->cells[i][CHUNKSIZE - 1].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
-        if(right && fabs(chunk->neighbors[1][2]->cells[i][0].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
+        if(top && fabs32(chunk->neighbors[0][1]->cells[CHUNKSIZE - 1][i].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
+        if(bottom && fabs32(chunk->neighbors[2][1]->cells[0][i].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
+        if(left && fabs32(chunk->neighbors[1][0]->cells[i][CHUNKSIZE - 1].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
+        if(right && fabs32(chunk->neighbors[1][2]->cells[i][0].temperature[world.tick] - AMBIENT_TEMPERATURE) > TEMPERATURE_EPSILON) { chunk->temperatureActive = 1; return; };
     }
 }
 

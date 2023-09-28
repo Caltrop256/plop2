@@ -40,16 +40,18 @@ void postUpdateChunkCleanup(void) {
             chunk->awesomePuwaDebugReturns = 0;
 
             if(chunk->active) {
-                if(chunk->elementsInChunk == 0) {
+                if(chunk->updateEventsInLastTick == 0) {
                     demoteChunk(chunk);
                 }
             } else {
-                if(chunk->elementsInChunk > 0) {
+                if(chunk->updateEventsInLastTick > 0) {
                     promoteChunk(chunk);
-                } else if(chunk->activeNeighbors == 0 && !chunk->temperatureActive) {
+                } else if(chunk->activeNeighbors == 0 && !chunk->temperatureActive && !chunk->visible) {
                     deallocChunk(chunk);
                 }
             }
+
+            chunk->updateEventsInLastTick = 0;
 
             chunk = next;
         }

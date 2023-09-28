@@ -45,13 +45,13 @@ import(js, notify_main_thread, void notify_main_thread(void));
 #endif
 #define STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 
-#define USE_GPU 1
+#define USE_GPU 0
 
 #ifndef NULL
 #define NULL ((void*)0)
 #endif
 
-inline f32 fabs(f32 f) {
+inline f32 fabs32(f32 f) {
     u32 i = ((*(u32*)&f) & 0x7fffffff);
     return (*(f32*)&i);
 }

@@ -4,6 +4,7 @@
 #include "./threads/threads.h"
 #include "fluidsim.h"
 #include "camera.h"
+#include "memory/memory.h"
 
 export struct GlueInformation glueInfo = {
     .gpuRenderMode = USE_GPU,
@@ -21,9 +22,7 @@ export void setup(void) {
     world.map = hashmap_create();
 
     for(u8 targetedPriority = PRIORITY_DEALLOCATION_RECOMMENDED; targetedPriority < NUMBER_OF_PRIORITIES; ++targetedPriority) {
-        for(u32 i = 0; i < 32; ++i) {
-            world.freeChunkList[targetedPriority][i] = targetedPriority > PRIORITY_DEALLOCATION_RECOMMENDED ? 0 : UINT32_MAX;
-        }
+        memset(&world.freeChunkList[targetedPriority], targetedPriority > PRIORITY_DEALLOCATION_RECOMMENDED ? 0 : UINT32_MAX, 32 * sizeof(u32));
     }
 }
 

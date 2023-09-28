@@ -1,6 +1,7 @@
 #include "../main.h"
 #include "world.h"
 #include "../walloc.h"
+#include "../worldgen.h"
 
 export World world = {
     .chunkThreadingList = {NULL, NULL, NULL, NULL},
@@ -50,10 +51,6 @@ export Chunk *allocChunk(i64 x, i64 y, _Bool isActive, AllocationPriority alloca
     chunk->x = x;
     chunk->y = y;
 
-    chunk->elementsInChunk = 0;
-    chunk->active = isActive;
-    chunk->activeNeighbors = 0;
-
     chunk->dirtyRect.maxY = 0;
     chunk->dirtyRect.minY = CHUNKSIZE - 1;
     chunk->dirtyRect.maxX = 0;
@@ -63,14 +60,10 @@ export Chunk *allocChunk(i64 x, i64 y, _Bool isActive, AllocationPriority alloca
 
     chunk->temperatureActive = 0;
 
-    for(u32 y = 0; y < CHUNKSIZE; ++y) {
-        for(u32 x = 0; x < CHUNKSIZE; ++x) {
-            chunk->cells[y][x] = (Cell){
-                .el = {.type = 0},
-                .temperature = {AMBIENT_TEMPERATURE, AMBIENT_TEMPERATURE}
-            };
-        }
-    }
+    chunk->elementsInChunk = generateChunk(chunk->cells, chunk->x, chunk->y);
+    chunk->updateEventsInLastTick = 0;
+    chunk->active = isActive;
+    chunk->activeNeighbors = 0;
 
     hashmap_set(world.map, &chunk->x, sizeof(struct XYPair), (uintptr_t)chunk);
 

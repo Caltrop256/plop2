@@ -19,13 +19,6 @@ export Camera camera = {
     .tileHeight = 0
 };
 
-void updateVisibleChunks(_Bool rescale) {
-    if(rescale) {
-        camera.chunksVisibleX = CEIL((f32)camera.screenWidth / (CHUNKSIZE * camera.scale));
-        camera.chunksVisibleY = CEIL((f32)camera.screenHeight / (CHUNKSIZE * camera.scale));
-    }
-}
-
 export void moveCamera(f64 dx, f64 dy) {
     f64 subX = camera.cellX + dx;
     f64 subY = camera.cellY + dy;
@@ -36,11 +29,27 @@ export void moveCamera(f64 dx, f64 dy) {
     camera.cellX = subX - floorSubX;
     camera.cellY = subY - floorSubY;
 
+    i64 oChunkX = camera.chunkX;
+    i64 oChunkY = camera.chunkY;
+
     camera.chunkX += floorSubX;
     camera.chunkY += floorSubY;
 
     if(floorSubX || floorSubY) {
-        updateVisibleChunks(0);
+        // for(i64 chunkOffsetY = 0; chunkOffsetY <= camera.chunksVisibleY; ++chunkOffsetY) {
+        //     for(i64 chunkOffsetX = 0; chunkOffsetX <= camera.chunksVisibleX; ++chunkOffsetX) {
+        //         Chunk *chunk = getChunk(oChunkX + chunkOffsetX, oChunkY + chunkOffsetX);
+        //         if(chunk) chunk->visible = 0;
+        //     }
+        // }
+
+        // for(i64 chunkOffsetY = 0; chunkOffsetY <= camera.chunksVisibleY; ++chunkOffsetY) {
+        //     for(i64 chunkOffsetX = 0; chunkOffsetX <= camera.chunksVisibleX; ++chunkOffsetX) {
+        //         Chunk *chunk = getChunk(camera.chunkX + chunkOffsetX, camera.chunkY + chunkOffsetY);
+        //         if(!chunk) allocChunk(camera.chunkX + chunkOffsetX, camera.chunkY + chunkOffsetY, 0, PRIORITY_HIGH);
+        //         chunk->visible = 1;
+        //     }
+        // }
     }
 }
 
@@ -61,7 +70,8 @@ export void setScreenSize(u32 width, u32 height, u32 scale) {
     camera.tileWidth = camera.screenWidth / scale;
     camera.tileHeight = camera.screenHeight / scale;
 
-    updateVisibleChunks(1);
+    camera.chunksVisibleX = CEIL((f32)camera.screenWidth / (CHUNKSIZE * camera.scale));
+    camera.chunksVisibleY = CEIL((f32)camera.screenHeight / (CHUNKSIZE * camera.scale));
 }
 
 #if USE_GPU

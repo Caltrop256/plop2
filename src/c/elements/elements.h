@@ -103,6 +103,8 @@ typedef struct Chunk {
     Cell cells[CHUNKSIZE][CHUNKSIZE];
 
     u32 elementsInChunk;
+    u32 updateEventsInLastTick;
+    _Bool visible;
     _Bool active;
     u8 activeNeighbors;
     u8 keepAliveTimer;

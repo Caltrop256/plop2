@@ -22,6 +22,7 @@
 
 #include "walloc.h"
 #include "main.h"
+#include "memory/memory.h"
 
 #define STATIC_ASSERT_EQ(a, b) _Static_assert((a) == (b), "eq")
 
@@ -462,14 +463,6 @@ free(void *ptr) {
 void *realloc(void *ptr, size_t size) {
   free(ptr);
   return malloc(size);
-}
-
-void *memset(void *s, i32 c,  size_t len) {
-  u8 *p = s;
-  while(len--) {
-    *p++ = (u8)c;
-  }
-  return s;
 }
 
 i32 memcmp(const void *s1, const void *s2, size_t len) {

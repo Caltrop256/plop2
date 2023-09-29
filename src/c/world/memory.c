@@ -48,6 +48,8 @@ export Chunk *allocChunk(i64 x, i64 y, _Bool isActive, AllocationPriority alloca
     }
     ASSERT(chunk != NULL, "chunk allocator failed!");
 
+    chunk->priority = allocationPriority;
+    
     chunk->x = x;
     chunk->y = y;
 
